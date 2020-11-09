@@ -20,6 +20,7 @@ import { Contact } from "./Contact";
       </label>
       <button type="submit">Close</button>
     </form>
+    <button (click)="addContact()">Add</button>
     <ul>
       <li *ngFor="let currentContact of contacts">
         <cnt-contact
@@ -92,5 +93,17 @@ export class ContactsComponent implements OnInit {
 
   closeForm() {
     this.editedContact = null;
+  }
+
+  addContact() {
+    const newContact: Contact = {
+      id: 5,
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'johndoe@test.com'
+    }
+
+    this.contacts.push(newContact);
+    this.editedContact = newContact;
   }
 }
