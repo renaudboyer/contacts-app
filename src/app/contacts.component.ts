@@ -13,7 +13,7 @@ import { Contact } from "./Contact";
             [selected]="selectedContact === currentContact"
         >
         </cnt-contact>
-        <button>Delete</button>
+        <button (click)="deleteContact(currentContact)">Delete</button>
         <cnt-contact-detail
             *ngIf="selectedContact === currentContact"
             [contact]="currentContact"
@@ -58,5 +58,11 @@ export class ContactsComponent implements OnInit {
     } else {
       this.selectedContact = contact;
     }
+  }
+
+  deleteContact(currentContact: Contact) {
+    const index = this.contacts.findIndex(c => c.id === currentContact.id);
+
+    this.contacts.splice(index, 1);
   }
 }
