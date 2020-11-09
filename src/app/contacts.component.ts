@@ -4,16 +4,16 @@ import { Contact } from "./Contact";
 @Component({
   selector: 'cnt-contacts',
   template: `
-      <h3>Number of contacts: {{ contactsNumber }}</h3>
+    <h3>Number of contacts: {{ contactsNumber }}</h3>
     <ul>
       <li>
-        {{ contact1.firstName }} {{ contact1.lastName }} - {{ contact1.email }}
+        <cnt-contact [contact]="contact1"></cnt-contact>
       </li>
       <li>
-        {{ contact2.firstName }} {{ contact2.lastName }} - {{ contact2.email }}
+        <cnt-contact [contact]="contact2"></cnt-contact>
       </li>
       <li>
-        {{ contact3.firstName }} {{ contact3.lastName }} - {{ contact3.email }}
+        <cnt-contact [contact]="contact3"></cnt-contact>
       </li>
     </ul>
   `,
