@@ -4,16 +4,10 @@ import { Contact } from "./Contact";
 @Component({
   selector: 'cnt-contacts',
   template: `
-    <h3>Number of contacts: {{ contactsNumber }}</h3>
+    <h3>Number of contacts: {{ contacts.length }}</h3>
     <ul>
-      <li>
-        <cnt-contact [contact]="contact1"></cnt-contact>
-      </li>
-      <li>
-        <cnt-contact [contact]="contact2"></cnt-contact>
-      </li>
-      <li>
-        <cnt-contact [contact]="contact3"></cnt-contact>
+      <li *ngFor="let currentContact of contacts">
+        <cnt-contact [contact]="currentContact"></cnt-contact>
       </li>
     </ul>
   `,
@@ -21,26 +15,26 @@ import { Contact } from "./Contact";
   ]
 })
 export class ContactsComponent implements OnInit {
-  contactsNumber = 3;
-
-  contact1: Contact = {
-    id: 1,
-    firstName: "Roberto",
-    lastName: "Carlos",
-    email: "robertocarlos@realmadrid.com"
-  };
-  contact2: Contact = {
-    id: 2,
-    firstName: "Rudy",
-    lastName: "VOLLER",
-    email: "rudyvoller@om.com"
-  }
-  contact3: Contact = {
-    id: 3,
-    firstName: "Jean-pierre",
-    lastName: "Papin",
-    email: "jeanpierrepapin@om.com"
-  };
+  contacts: Contact[] = [
+    {
+      id: 1,
+      firstName: "Roberto",
+      lastName: "Carlos",
+      email: "robertocarlos@realmadrid.com"
+    },
+    {
+      id: 2,
+      firstName: "Rudy",
+      lastName: "VOLLER",
+      email: "rudyvoller@om.com"
+    },
+    {
+      id: 3,
+      firstName: "Jean-pierre",
+      lastName: "Papin",
+      email: "jeanpierrepapin@om.com"
+    }
+  ];
 
   constructor() { }
 
