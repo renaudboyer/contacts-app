@@ -13,6 +13,11 @@ import { Contact } from "./Contact";
             [selected]="selectedContact === currentContact"
         >
         </cnt-contact>
+        <button>Delete</button>
+        <cnt-contact-detail
+            *ngIf="selectedContact === currentContact"
+            [contact]="currentContact"
+        ></cnt-contact-detail>
       </li>
     </ul>
   `,
