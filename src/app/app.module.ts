@@ -6,13 +6,15 @@ import { ContactsComponent } from './contacts.component';
 import { ContactComponent } from './contact.component';
 import { ContactDetailComponent } from './contact-detail.component';
 import {FormsModule} from "@angular/forms";
+import { ContactFormComponent } from './contact-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContactsComponent,
     ContactComponent,
-    ContactDetailComponent
+    ContactDetailComponent,
+    ContactFormComponent
   ],
   imports: [
     BrowserModule,

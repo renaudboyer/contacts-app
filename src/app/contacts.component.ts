@@ -5,22 +5,11 @@ import { Contact } from "./Contact";
   selector: 'cnt-contacts',
   template: `
     <h3>Number of contacts: {{ contacts.length }}</h3>
-    <form *ngIf="editedContact" (ngSubmit)="closeForm()">
-      <label>Id:
-        <input name="id" [(ngModel)]="editedContact.id" required type="number">
-      </label>
-      <label>First Name:
-        <input name="firstname" [(ngModel)]="editedContact.firstName" required>
-      </label>
-      <label>Last Name:
-        <input name="lastname" [(ngModel)]="editedContact.lastName" required>
-      </label>
-      <label>Email:
-        <input name="email" [(ngModel)]="editedContact.email" type="email" required>
-      </label>
-      <button type="submit">Close</button>
-    </form>
-    <button (click)="addContact()">Add</button>
+    <cnt-contact-form 
+        [contact]="editedContact"
+        (modifyContact)="modifyContact($event)"
+    ></cnt-contact-form>
+    <button (click)="addContact()" [disabled]="!!editedContact">Add</button>
     <ul>
       <li *ngFor="let currentContact of contacts">
         <cnt-contact
@@ -29,8 +18,8 @@ import { Contact } from "./Contact";
             [selected]="selectedContact === currentContact"
         >
         </cnt-contact>
-        <button (click)="editContact(currentContact)">Edit</button>
-        <button (click)="deleteContact(currentContact)">Delete</button>
+        <button (click)="editContact(currentContact)" [disabled]="!!editedContact">Edit</button>
+        <button (click)="deleteContact(currentContact)" [disabled]="!!editedContact">Delete</button>
         <cnt-contact-detail
             *ngIf="selectedContact === currentContact"
             [contact]="currentContact"
@@ -38,10 +27,7 @@ import { Contact } from "./Contact";
       </li>
     </ul>
   `,
-  styles: [
-      'form label { display: block }',
-    'input.ng-invalid { background: lightcoral }'
-  ]
+  styles: []
 })
 export class ContactsComponent implements OnInit {
   selectedContact: Contact;
@@ -88,7 +74,7 @@ export class ContactsComponent implements OnInit {
   }
 
   editContact(currentContact: Contact) {
-    this.editedContact = currentContact;
+    this.editedContact = Object.assign({}, currentContact);
   }
 
   closeForm() {
@@ -103,7 +89,17 @@ export class ContactsComponent implements OnInit {
       email: 'johndoe@test.com'
     }
 
-    this.contacts.push(newContact);
     this.editedContact = newContact;
+  }
+
+  modifyContact(contact: Contact) {
+    const index = this.contacts.findIndex(c => c.id === contact.id);
+    if (index !== -1) {
+      this.contacts.splice(index, 1, contact);
+    } else {
+      this.contacts.push(contact);
+    }
+
+    this.closeForm();
   }
 }
