@@ -5,7 +5,7 @@ import {Contact} from "./Contact";
   selector: 'cnt-contact',
   template: `
     <span>
-      {{ contact.firstName }} {{ contact.lastName }} - {{ contact.email }}
+      {{ contact.firstName | titlecase }} {{ contact.lastName | uppercase }} - {{ contact.email | lowercase }}
     </span>
   `,
   styles: []
