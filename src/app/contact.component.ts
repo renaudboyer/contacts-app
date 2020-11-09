@@ -4,14 +4,15 @@ import {Contact} from "./Contact";
 @Component({
   selector: 'cnt-contact',
   template: `
-    <span>
+    <span [class.selected]="selected">
       {{ contact.firstName | titlecase }} {{ contact.lastName | uppercase }} - {{ contact.email | lowercase }}
     </span>
   `,
-  styles: []
+  styles: ['span.selected { background: lightgray }']
 })
 export class ContactComponent implements OnInit {
   @Input() contact: Contact;
+  @Input() selected: boolean;
 
   constructor() { }
 

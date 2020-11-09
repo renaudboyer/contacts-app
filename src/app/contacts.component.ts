@@ -10,15 +10,13 @@ import { Contact } from "./Contact";
         <cnt-contact
             (click)="selectContact(currentContact)"
             [contact]="currentContact"
-            [class.selected]="selectedContact === currentContact"
+            [selected]="selectedContact === currentContact"
         >
         </cnt-contact>
       </li>
     </ul>
   `,
-  styles: [
-      'cnt-contact.selected { background: lightgray }'
-  ]
+  styles: []
 })
 export class ContactsComponent implements OnInit {
   selectedContact: Contact;
@@ -50,6 +48,10 @@ export class ContactsComponent implements OnInit {
   }
 
   selectContact(contact: Contact) {
-    this.selectedContact = contact;
+    if (this.selectedContact === contact) {
+      this.selectedContact = null;
+    } else {
+      this.selectedContact = contact;
+    }
   }
 }
