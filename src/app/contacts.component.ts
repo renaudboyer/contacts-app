@@ -7,16 +7,16 @@ import { Contact } from "./Contact";
     <h3>Number of contacts: {{ contacts.length }}</h3>
     <form *ngIf="editedContact" (ngSubmit)="closeForm()">
       <label>Id:
-        <input name="id" [(ngModel)]="editedContact.id" >
+        <input name="id" [(ngModel)]="editedContact.id" required type="number">
       </label>
       <label>First Name:
-        <input name="firstname" [(ngModel)]="editedContact.firstName">
+        <input name="firstname" [(ngModel)]="editedContact.firstName" required>
       </label>
       <label>Last Name:
-        <input name="lastname" [(ngModel)]="editedContact.lastName">
+        <input name="lastname" [(ngModel)]="editedContact.lastName" required>
       </label>
       <label>Email:
-        <input name="email" [(ngModel)]="editedContact.email">
+        <input name="email" [(ngModel)]="editedContact.email" type="email" required>
       </label>
       <button type="submit">Close</button>
     </form>
@@ -37,7 +37,10 @@ import { Contact } from "./Contact";
       </li>
     </ul>
   `,
-  styles: ['form label { display: block }']
+  styles: [
+      'form label { display: block }',
+    'input.ng-invalid { background: lightcoral }'
+  ]
 })
 export class ContactsComponent implements OnInit {
   selectedContact: Contact;
