@@ -6,9 +6,6 @@ import {NgForm} from "@angular/forms";
   selector: 'cnt-contact-form',
   template: `
     <form *ngIf="contact" #formElement="ngForm" (ngSubmit)="modify(formElement)">
-      <label>Id:
-        <input name="id" [(ngModel)]="contact.id" required type="number">
-      </label>
       <label>First Name:
         <input name="firstname" [(ngModel)]="contact.firstName" required>
       </label>

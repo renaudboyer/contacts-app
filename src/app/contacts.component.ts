@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from "./Contact";
+import { ContactsService } from "./contacts.service";
 
 @Component({
   selector: 'cnt-contacts',
@@ -32,29 +33,11 @@ import { Contact } from "./Contact";
 export class ContactsComponent implements OnInit {
   selectedContact: Contact;
   editedContact: Contact;
+  contacts;
 
-  contacts: Contact[] = [
-    {
-      id: 1,
-      firstName: "Roberto",
-      lastName: "Carlos",
-      email: "robertocarlos@realmadrid.com"
-    },
-    {
-      id: 2,
-      firstName: "Rudy",
-      lastName: "VOLLER",
-      email: "rudyvoller@om.com"
-    },
-    {
-      id: 3,
-      firstName: "Jean-pierre",
-      lastName: "Papin",
-      email: "jeanpierrepapin@om.com"
-    }
-  ];
-
-  constructor() { }
+  constructor(private contactsService: ContactsService) {
+    this.contacts = contactsService.getList();
+  }
 
   ngOnInit(): void {
   }
@@ -68,9 +51,7 @@ export class ContactsComponent implements OnInit {
   }
 
   deleteContact(currentContact: Contact) {
-    const index = this.contacts.findIndex(c => c.id === currentContact.id);
-
-    this.contacts.splice(index, 1);
+    this.contactsService.delete(currentContact);
   }
 
   editContact(currentContact: Contact) {
@@ -82,23 +63,11 @@ export class ContactsComponent implements OnInit {
   }
 
   addContact() {
-    const newContact: Contact = {
-      id: 5,
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'johndoe@test.com'
-    }
-
-    this.editedContact = newContact;
+    this.editedContact = this.contactsService.createNewEvent();
   }
 
   modifyContact(contact: Contact) {
-    const index = this.contacts.findIndex(c => c.id === contact.id);
-    if (index !== -1) {
-      this.contacts.splice(index, 1, contact);
-    } else {
-      this.contacts.push(contact);
-    }
+    this.contactsService.addOrModify(contact);
 
     this.closeForm();
   }
