@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {Contact} from "./Contact";
 import {NgForm} from "@angular/forms";
 import {ContactsService} from "./contacts.service";
@@ -9,7 +9,7 @@ import {ContactsService} from "./contacts.service";
     <h3>{{ createMode ? 'Contact Creation' : 'Contact Modification' }}</h3>
     <form #formElement="ngForm" (ngSubmit)="modify(formElement)">
       <label>First Name:
-        <input name="firstname" [(ngModel)]="contact.firstName" required>
+        <input #inputFirstName name="firstname" [(ngModel)]="contact.firstName" required>
       </label>
       <label>Last Name:
         <input name="lastname" [(ngModel)]="contact.lastName" required>
@@ -29,9 +29,11 @@ import {ContactsService} from "./contacts.service";
     'input.ng-invalid { border-left: 10px solid red; }'
   ]
 })
-export class ContactFormComponent implements OnInit {
+export class ContactFormComponent implements OnInit, AfterViewInit {
   @Input() contact: Contact;
   @Output() modifyContact = new EventEmitter<Contact>()
+
+  @ViewChild('inputFirstName', { static: false }) inputFirstName: ElementRef<HTMLInputElement>;
 
   createMode = false;
 
@@ -42,6 +44,10 @@ export class ContactFormComponent implements OnInit {
       this.contact = this.contactsService.createNewEvent();
       this.createMode = true;
     }
+  }
+
+  ngAfterViewInit() {
+    this.inputFirstName.nativeElement.focus();
   }
 
   modify(formElement: NgForm) {
