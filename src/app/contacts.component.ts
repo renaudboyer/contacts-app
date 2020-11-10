@@ -6,11 +6,9 @@ import { ContactsService } from "./contacts.service";
   selector: 'cnt-contacts',
   template: `
     <h3>Number of contacts: {{ contacts.length }}</h3>
-    <cnt-contact-form 
-        [contact]="editedContact"
-        (modifyContact)="modifyContact($event)"
+    <cnt-contact-form *ngIf="displayForm" [contact]="editedContact" (modifyContact)="modifyContact($event)"
     ></cnt-contact-form>
-    <button (click)="addContact()" [disabled]="!!editedContact">Add</button>
+    <button (click)="addContact()" [disabled]="displayForm">Add</button>
     <ul>
       <li *ngFor="let currentContact of contacts">
         <cnt-contact
@@ -19,8 +17,8 @@ import { ContactsService } from "./contacts.service";
             [selected]="selectedContact === currentContact"
         >
         </cnt-contact>
-        <button (click)="editContact(currentContact)" [disabled]="!!editedContact">Edit</button>
-        <button (click)="deleteContact(currentContact)" [disabled]="!!editedContact">Delete</button>
+        <button (click)="editContact(currentContact)" [disabled]="displayForm">Edit</button>
+        <button (click)="deleteContact(currentContact)" [disabled]="displayForm">Delete</button>
         <cnt-contact-detail
             *ngIf="selectedContact === currentContact"
             [contact]="currentContact"
@@ -34,6 +32,7 @@ export class ContactsComponent implements OnInit {
   selectedContact: Contact;
   editedContact: Contact;
   contacts;
+  displayForm = false;
 
   constructor(private contactsService: ContactsService) {
     this.contacts = contactsService.getList();
@@ -55,15 +54,20 @@ export class ContactsComponent implements OnInit {
   }
 
   editContact(currentContact: Contact) {
+    this.openForm();
     this.editedContact = Object.assign({}, currentContact);
   }
 
   closeForm() {
-    this.editedContact = null;
+    this.displayForm = false;
+  }
+
+  openForm() {
+    this.displayForm = true;
   }
 
   addContact() {
-    this.editedContact = this.contactsService.createNewEvent();
+    this.openForm();
   }
 
   modifyContact(contact: Contact) {

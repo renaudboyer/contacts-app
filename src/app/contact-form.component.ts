@@ -1,11 +1,13 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Contact} from "./Contact";
 import {NgForm} from "@angular/forms";
+import {ContactsService} from "./contacts.service";
 
 @Component({
   selector: 'cnt-contact-form',
   template: `
-    <form *ngIf="contact" #formElement="ngForm" (ngSubmit)="modify(formElement)">
+    <h3>{{ createMode ? 'Contact Creation' : 'Contact Modification' }}</h3>
+    <form #formElement="ngForm" (ngSubmit)="modify(formElement)">
       <label>First Name:
         <input name="firstname" [(ngModel)]="contact.firstName" required>
       </label>
@@ -15,7 +17,10 @@ import {NgForm} from "@angular/forms";
       <label>Email:
         <input name="email" type="email" [(ngModel)]="contact.email" required>
       </label>
-      <input type="submit" [disabled]="formElement.invalid" value="Modify">        
+      <input
+          type="submit"
+          [disabled]="formElement.invalid"
+          value="{{createMode ? 'Create' : 'Modify'}}">        
     </form>
   `,
   styles: [
@@ -28,9 +33,15 @@ export class ContactFormComponent implements OnInit {
   @Input() contact: Contact;
   @Output() modifyContact = new EventEmitter<Contact>()
 
-  constructor() { }
+  createMode = false;
+
+  constructor(private contactsService: ContactsService) { }
 
   ngOnInit(): void {
+    if (!this.contact) {
+      this.contact = this.contactsService.createNewEvent();
+      this.createMode = true;
+    }
   }
 
   modify(formElement: NgForm) {
