@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
+import { v4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactIdService {
-  sequence = 4;
-
   constructor() { }
 
   get() {
-    return this.sequence++;
+    return v4();
   }
 }
