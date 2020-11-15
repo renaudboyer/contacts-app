@@ -5,7 +5,7 @@ import { ContactsService } from "./contacts.service";
 @Component({
   selector: 'cnt-contacts',
   template: `
-    <h3>Number of contacts: {{ contacts.length }}</h3>
+    <h3>Number of contacts: {{ contacts?.length }}</h3>
     <cnt-contact-form *ngIf="displayForm" [contact]="editedContact" (modifyContact)="modifyContact($event)"
     ></cnt-contact-form>
     <button (click)="addContact()" [disabled]="displayForm">Add</button>
@@ -34,11 +34,10 @@ export class ContactsComponent implements OnInit {
   contacts;
   displayForm = false;
 
-  constructor(private contactsService: ContactsService) {
-    this.contacts = contactsService.getList();
-  }
+  constructor(private contactsService: ContactsService) { }
 
   ngOnInit(): void {
+    this.contacts = this.contactsService.getList();
   }
 
   selectContact(contact: Contact) {

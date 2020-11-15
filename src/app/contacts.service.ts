@@ -1,33 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Contact } from "./Contact";
 import { ContactIdService } from "./contact-id.service";
+import { HttpClient } from "@angular/common/http";
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactsService {
-  private contacts: Contact[] = [
-    {
-      id: 1,
-      firstName: "Roberto",
-      lastName: "Carlos",
-      email: "robertocarlos@realmadrid.com"
-    },
-    {
-      id: 2,
-      firstName: "Rudy",
-      lastName: "VOLLER",
-      email: "rudyvoller@om.com"
-    },
-    {
-      id: 3,
-      firstName: "Jean-pierre",
-      lastName: "Papin",
-      email: "jeanpierrepapin@om.com"
-    }
-  ];
+  contacts: Array<Contact> = [];
+  contactApiUrl = environment.apiUrl + 'contacts/';
 
-  constructor(private contactIdService: ContactIdService) { }
+  constructor(private contactIdService: ContactIdService, private http: HttpClient) {
+    this.http.get<Array<Contact>>(this.contactApiUrl)
+        .subscribe(contacts => {
+          this.contacts.push(...contacts);
+        });
+  }
 
   createNewEvent():Contact {
     return {
@@ -39,7 +28,7 @@ export class ContactsService {
   }
 
   getList() {
-    return this.contacts
+    return this.contacts;
   }
 
   addOrModify(contact: Contact) {
@@ -53,18 +42,27 @@ export class ContactsService {
   add(contact: Contact) {
     contact.id = this.contactIdService.get();
 
-    this.contacts.push(contact);
+    this.http.post(this.contactApiUrl, contact)
+        .subscribe(() => {
+          this.contacts.push(contact);
+        });
   }
 
   update(contact: Contact) {
-    const index = this.contacts.findIndex(c => c.id === contact.id);
+    this.http.put(`${this.contactApiUrl}/${contact.id}`, contact)
+        .subscribe(() => {
+          const index = this.contacts.findIndex(c => c.id === contact.id);
 
-    this.contacts.splice(index, 1, contact);
+          this.contacts.splice(index, 1, contact);
+        });
   }
 
   delete(contact: Contact) {
-    const index = this.contacts.findIndex(c => c.id === contact.id);
+    this.http.delete(`${this.contactApiUrl}/${contact.id}`)
+        .subscribe(() => {
+          const index = this.contacts.findIndex(c => c.id === contact.id);
 
-    this.contacts.splice(index, 1);
+          this.contacts.splice(index, 1);
+        });
   }
 }
