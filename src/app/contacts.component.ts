@@ -1,16 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { Contact } from "./Contact";
 import { ContactsService } from "./contacts.service";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'cnt-contacts',
   template: `
-    <h3>Number of contacts: {{ contacts?.length }}</h3>
+    <h3>Number of contacts: {{ (contacts | async).length }}</h3>
     <cnt-contact-form *ngIf="displayForm" [contact]="editedContact" (modifyContact)="modifyContact($event)"
     ></cnt-contact-form>
     <button (click)="addContact()" [disabled]="displayForm">Add</button>
     <ul>
-      <li *ngFor="let currentContact of contacts">
+      <li *ngFor="let currentContact of contacts | async">
         <cnt-contact
             (click)="selectContact(currentContact)"
             [contact]="currentContact"
@@ -31,7 +32,7 @@ import { ContactsService } from "./contacts.service";
 export class ContactsComponent implements OnInit {
   selectedContact: Contact;
   editedContact: Contact;
-  contacts;
+  contacts: Observable<Array<Contact>>;
   displayForm = false;
 
   constructor(private contactsService: ContactsService) { }

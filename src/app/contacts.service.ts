@@ -3,18 +3,19 @@ import { Contact } from "./Contact";
 import { ContactIdService } from "./contact-id.service";
 import { HttpClient } from "@angular/common/http";
 import { environment } from '../environments/environment';
+import { BehaviorSubject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContactsService {
-  contacts: Array<Contact> = [];
+  private contactSubject: BehaviorSubject<Array<Contact>> = new BehaviorSubject<Array<Contact>>([]);
   contactApiUrl = environment.apiUrl + 'contacts/';
 
   constructor(private contactIdService: ContactIdService, private http: HttpClient) {
     this.http.get<Array<Contact>>(this.contactApiUrl)
         .subscribe(contacts => {
-          this.contacts.push(...contacts);
+          this.contactSubject.next(contacts);
         });
   }
 
@@ -28,7 +29,7 @@ export class ContactsService {
   }
 
   getList() {
-    return this.contacts;
+    return this.contactSubject.asObservable();
   }
 
   addOrModify(contact: Contact) {
@@ -44,25 +45,34 @@ export class ContactsService {
 
     this.http.post(this.contactApiUrl, contact)
         .subscribe(() => {
-          this.contacts.push(contact);
+          const contactsTab = this.contactSubject.getValue()
+          contactsTab.push(contact);
+
+          this.contactSubject.next(contactsTab);
         });
   }
 
   update(contact: Contact) {
     this.http.put(`${this.contactApiUrl}/${contact.id}`, contact)
         .subscribe(() => {
-          const index = this.contacts.findIndex(c => c.id === contact.id);
+          const contactsTab = this.contactSubject.getValue()
+          const index = contactsTab.findIndex(c => c.id === contact.id);
 
-          this.contacts.splice(index, 1, contact);
+          contactsTab.splice(index, 1, contact);
+
+          this.contactSubject.next(contactsTab);
         });
   }
 
   delete(contact: Contact) {
     this.http.delete(`${this.contactApiUrl}/${contact.id}`)
         .subscribe(() => {
-          const index = this.contacts.findIndex(c => c.id === contact.id);
+          const contactsTab = this.contactSubject.getValue()
+          const index = contactsTab.findIndex(c => c.id === contact.id);
 
-          this.contacts.splice(index, 1);
+          contactsTab.splice(index, 1);
+
+          this.contactSubject.next(contactsTab);
         });
   }
 }
