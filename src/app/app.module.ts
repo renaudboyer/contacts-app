@@ -9,6 +9,7 @@ import {FormsModule} from "@angular/forms";
 import { ContactFormComponent } from './contact-form.component';
 import { HttpClientModule } from "@angular/common/http";
 import { ContactListComponent } from './contact-list.component';
+import { AppRoutingModule } from "./app-routing.module";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ContactListComponent } from './contact-list.component';
     ContactListComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     FormsModule,
     HttpClientModule

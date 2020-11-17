@@ -5,8 +5,10 @@ import { Observable } from "rxjs";
 
 @Component({
   selector: 'cnt-contacts',
-  template: `
-<cnt-contact-list></cnt-contact-list>
+  template: `          
+    <header><h1>Contacts App</h1></header>
+    <router-outlet></router-outlet>
+    <footer>(c) 2020</footer>
   `,
   styles: []
 })
