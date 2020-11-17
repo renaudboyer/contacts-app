@@ -75,4 +75,10 @@ export class ContactsService {
           this.contactSubject.next(contactsTab);
         });
   }
+
+  get(id: string) {
+    const contactsList = this.contactSubject.getValue();
+
+    return contactsList.find(contact => contact.id = id);
+  }
 }

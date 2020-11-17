@@ -10,6 +10,7 @@ import { ContactFormComponent } from './contact-form.component';
 import { HttpClientModule } from "@angular/common/http";
 import { ContactListComponent } from './contact-list.component';
 import { AppRoutingModule } from "./app-routing.module";
+import { ContactDisplayComponent } from './contact-display.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AppRoutingModule } from "./app-routing.module";
     ContactComponent,
     ContactDetailComponent,
     ContactFormComponent,
-    ContactListComponent
+    ContactListComponent,
+    ContactDisplayComponent
   ],
   imports: [
     AppRoutingModule,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Contact} from "./Contact";
 import {ContactsService} from "./contacts.service";
 import {Observable} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'cnt-contact-list',
@@ -30,18 +31,14 @@ export class ContactListComponent implements OnInit {
   contacts: Observable<Array<Contact>>;
   displayForm = false;
 
-  constructor(private contactsService: ContactsService) { }
+  constructor(private contactsService: ContactsService, private router: Router) { }
 
   ngOnInit(): void {
     this.contacts = this.contactsService.getList();
   }
 
   selectContact(contact: Contact) {
-    if (this.selectedContact === contact) {
-      this.selectedContact = null;
-    } else {
-      this.selectedContact = contact;
-    }
+    this.router.navigate(['contacts', contact.id]);
   }
 
   deleteContact(currentContact: Contact) {
