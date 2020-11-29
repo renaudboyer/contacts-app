@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
   selector: 'cnt-contact-list',
   template: `
       <h3>Number of contacts: {{ (contacts | async).length }}</h3>
-      <button (click)="addContact()" [disabled]="displayForm">Add</button>
+      <button (click)="addContact()">Add</button>
       <ul>
           <li *ngFor="let currentContact of contacts | async">
               <cnt-contact
@@ -17,8 +17,8 @@ import {Router} from "@angular/router";
                       [selected]="selectedContact === currentContact"
               >
               </cnt-contact>
-              <button (click)="editContact(currentContact)" [disabled]="displayForm">Edit</button>
-              <button (click)="deleteContact(currentContact)" [disabled]="displayForm">Delete</button>
+              <button (click)="editContact(currentContact)">Edit</button>
+              <button (click)="deleteContact(currentContact)">Delete</button>
           </li>
       </ul>
   `,
@@ -27,9 +27,7 @@ import {Router} from "@angular/router";
 })
 export class ContactListComponent implements OnInit {
   selectedContact: Contact;
-  editedContact: Contact;
   contacts: Observable<Array<Contact>>;
-  displayForm = false;
 
   constructor(private contactsService: ContactsService, private router: Router) { }
 
@@ -46,25 +44,10 @@ export class ContactListComponent implements OnInit {
   }
 
   editContact(currentContact: Contact) {
-    this.openForm();
-    this.editedContact = Object.assign({}, currentContact);
-  }
-
-  closeForm() {
-    this.displayForm = false;
-  }
-
-  openForm() {
-    this.displayForm = true;
+    this.router.navigate(['contacts', currentContact.id, 'edit']);
   }
 
   addContact() {
-    this.openForm();
-  }
-
-  modifyContact(contact: Contact) {
-    this.contactsService.addOrModify(contact);
-
-    this.closeForm();
+    this.router.navigate(['contacts', 'new']);
   }
 }

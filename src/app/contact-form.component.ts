@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Outpu
 import {Contact} from "./Contact";
 import {NgForm} from "@angular/forms";
 import {ContactsService} from "./contacts.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'cnt-contact-form',
@@ -20,7 +21,8 @@ import {ContactsService} from "./contacts.service";
       <input
           type="submit"
           [disabled]="formElement.invalid"
-          value="{{createMode ? 'Create' : 'Modify'}}">        
+          value="{{createMode ? 'Create' : 'Modify'}}">
+      <button routerLink="/">Back</button>
     </form>
   `,
   styles: [
@@ -31,13 +33,12 @@ import {ContactsService} from "./contacts.service";
 })
 export class ContactFormComponent implements OnInit, AfterViewInit {
   @Input() contact: Contact;
-  @Output() modifyContact = new EventEmitter<Contact>()
 
   @ViewChild('inputFirstName', { static: false }) inputFirstName: ElementRef<HTMLInputElement>;
 
   createMode = false;
 
-  constructor(private contactsService: ContactsService) { }
+  constructor(private contactsService: ContactsService, private router: Router) { }
 
   ngOnInit(): void {
     if (!this.contact) {
@@ -52,7 +53,8 @@ export class ContactFormComponent implements OnInit, AfterViewInit {
 
   modify(formElement: NgForm) {
     if (formElement.valid) {
-      this.modifyContact.emit(this.contact);
+      this.contactsService.addOrModify(this.contact);
+      this.router.navigate(['/']);
     }
   }
 }

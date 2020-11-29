@@ -11,6 +11,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { ContactListComponent } from './contact-list.component';
 import { AppRoutingModule } from "./app-routing.module";
 import { ContactDisplayComponent } from './contact-display.component';
+import { ContactEditComponent } from './contact-edit.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ContactDisplayComponent } from './contact-display.component';
     ContactDetailComponent,
     ContactFormComponent,
     ContactListComponent,
-    ContactDisplayComponent
+    ContactDisplayComponent,
+    ContactEditComponent
   ],
   imports: [
     AppRoutingModule,
